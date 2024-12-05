@@ -13,100 +13,110 @@ interface ChartProps {
   allProducts: IProduct[];
   showPie: boolean;
   category: string;
+  runReportOnCat: string;
+  onClearShowAllCat: Number;
 }
 
 export const Chart: FC<ChartProps> = ({
   selectedProducts,
   category,
   showPie,
-  allProducts
+  allProducts,
+  runReportOnCat,
+  onClearShowAllCat,
 }) => {
   const xAxisText = "";
-  const title = "Products in selected Category";
-  const [priceBar, setPriceBar] = useState<string[]>([])
+  const title = `Products in ${category}`;
+  const [priceBar, setPriceBar] = useState<string[]>([]);
   const [dataPie, setDataPie] = useState<[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const selectedCatProducts=allProducts.filter(item=>item.category===category)
-  // console.log("categoryWiseProduct",categoryWiseProduct)
+  const selectedCatProducts = allProducts.filter(
+    (item) => item.category === category
+  );
   useEffect(() => {
-    AllCatDataEmbed()
-  }, [allProducts])
+    AllCatDataEmbed();
+  }, [allProducts, onClearShowAllCat]);
 
-  const AllCatDataEmbed=()=>{
-    const cMap:any = {};
-    if(allProducts.length){
+  const AllCatDataEmbed = () => {
+    const cMap: any = {};
+    if (allProducts.length) {
       allProducts.forEach((product: IProduct) => {
-        if(cMap[product.category]){
+        if (cMap[product.category]) {
           cMap[product.category] += cMap[product.category];
         } else {
           cMap[product.category] = 1;
-        }        
-      })
-      const res:any = Object.keys(cMap).map((key, value)=> {
-        return {"name": key, "y": value}
+        }
+      });
+      const res: any = Object.keys(cMap).map((key, value) => {
+        return { name: key, y: value };
       });
       setDataPie(res);
     }
-  }
+  };
 
-
-  useEffect(()=>{
-    if(category){
-      let tempDataCatProd:any = [];
-      selectedCatProducts.forEach((product: IProduct,index)=>{
+  useEffect(() => {
+    if (category) {
+      let tempDataCatProd: any = [];
+      selectedCatProducts.forEach((product: IProduct, index) => {
         tempDataCatProd.push({
           name: product?.title,
           y: index,
-        })
-      })
+        });
+      });
       setDataPie(tempDataCatProd);
-    }else{
-      AllCatDataEmbed()
+    } else {
+      AllCatDataEmbed();
     }
-   
-  },[category])
+  }, [runReportOnCat]);
 
   useEffect(() => {
-    if(selectedProducts) {
-      const p: string[]=[]
+    if (selectedProducts) {
+      const p: string[] = [];
       allProducts.forEach((product: IProduct) => {
-        if(selectedProducts.includes(product.title)){
+        if (selectedProducts.includes(product.title)) {
           p.push(product.price);
         }
-      })
+      });
       setPriceBar(p);
     }
-    if(!showPie) {
+    if (!showPie) {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
       }, 3000);
     }
-  }, [selectedProducts])
+  }, [selectedProducts]);
 
   return (
     <>
-      <Box
-        className="chart-container"
-        component="section"
-      >
+      <Box className="chart-container" component="section">
         {loading ? (
-          <Box
-            className="loading"
-          > <IconButton>
-          <CircularProgress />
-        </IconButton></Box>
-        ) : (
-              showPie ? ( 
-              dataPie && dataPie?.length && <PieChart  title={category ? category.toUpperCase() : "All Categories"} data={dataPie} />
-              ):
-              <BarChart
-              title={title}
-              products={selectedProducts}
-              data={priceBar}
-              xAxisText={xAxisText}
-              yAxisText={category}
+          <Box className="loading">
+            {" "}
+            <IconButton>
+              <CircularProgress />
+            </IconButton>
+          </Box>
+        ) : showPie ? (
+          dataPie &&
+          dataPie?.length && (
+            <PieChart
+              title={
+                category
+                  ? `Products in ${category.toUpperCase()}`
+                  : "All Categories"
+              }
+              data={dataPie}
             />
+          )
+        ) : (
+          <BarChart
+            title={title}
+            products={selectedProducts}
+            data={priceBar}
+            xAxisText={xAxisText}
+            yAxisText={category}
+          />
         )}
       </Box>
     </>

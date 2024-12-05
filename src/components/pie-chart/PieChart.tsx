@@ -17,16 +17,14 @@ const PieChart: React.FC<PieChartProps> = ({ title, data }) => {
     },
     series: [
       {
-        type: "pie", 
+        type: "pie",
         name: "Data",
         data: data,
       },
     ],
   };
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  useEffect(() => {}, [data]);
 
   return (
     <div>

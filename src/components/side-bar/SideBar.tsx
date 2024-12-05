@@ -10,6 +10,7 @@ import {
   Button,
   Typography,
   Skeleton,
+  Paper,
 } from "@mui/material";
 import { FormEvent, MouseEvent, useEffect, ChangeEvent } from "react";
 import "./side-bar.css";
@@ -28,6 +29,7 @@ interface SideBarProps {
   setShowPie: React.Dispatch<React.SetStateAction<boolean>>;
   handleRunReport: (e: MouseEvent<HTMLButtonElement>) => void;
   allProducts: IProduct[];
+  setOnClearShowAllCat: React.Dispatch<React.SetStateAction<Number>>;
 }
 
 export const SideBar: React.FC<SideBarProps> = ({
@@ -39,6 +41,7 @@ export const SideBar: React.FC<SideBarProps> = ({
   setShowPie,
   handleRunReport,
   allProducts,
+  setOnClearShowAllCat,
 }) => {
   const [productList, setProductList] = useState<string[]>([]);
 
@@ -75,6 +78,7 @@ export const SideBar: React.FC<SideBarProps> = ({
     setCategory("");
     setProduct([]);
     setShowPie(true);
+    setOnClearShowAllCat(Math.floor(Math.random() * 100) + 1);
   };
 
   return (
@@ -82,76 +86,89 @@ export const SideBar: React.FC<SideBarProps> = ({
       <Box
         className="side-bar-container"
         component="section"
-        sx={{ p: 2, border: "1px solid #cecece" }}
+        sx={{
+          p: 2,
+          border: "1px solid #cecece",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
       >
-        <Box sx={{ mb: 2 }} className="title-bar">
-          <Typography sx={{ mb: 0 }} variant="h5" gutterBottom>
-            Filters
-          </Typography>
-          <Button variant="text" sx={{ textTransform: "capitalize" }} onClick={handleClear}>
-            Clear &times;
-          </Button>
-        </Box>
-        <FormControl sx={{ mb: 2 }} fullWidth>
-          <InputLabel id="category-lists">Category</InputLabel>
-          <Select
-            labelId="category-lists"
-            id="category-select"
-            label="Category"
-            onChange={handleCategoryChange}
-            value={category}
-            style={{
-              textOverflow: "ellipsis",
-              overflow: "hidden",
-              whiteSpace: "pre",
-            }}
-          >
-            {allCategories && allCategories.length
-              ? allCategories.map((cat: string) => (
+        <Paper>
+          <Box sx={{ mb: 2 }} className="title-bar">
+            <Typography sx={{ mb: 0 }} variant="h5" gutterBottom>
+              Filters
+            </Typography>
+            <Button
+              variant="text"
+              sx={{ textTransform: "capitalize" }}
+              onClick={handleClear}
+            >
+              Clear &times;
+            </Button>
+          </Box>
+          <FormControl sx={{ mb: 2 }} fullWidth>
+            <InputLabel id="category-lists">Category</InputLabel>
+            <Select
+              labelId="category-lists"
+              id="category-select"
+              label="Category"
+              onChange={handleCategoryChange}
+              value={category}
+              style={{
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                whiteSpace: "pre",
+              }}
+            >
+              {allCategories && allCategories.length ? (
+                allCategories.map((cat: string) => (
                   <MenuItem key={cat} value={cat} className="capitalize">
                     {cat}
                   </MenuItem>
                 ))
-              :   <>
-              {Array.from({ length: 12 }).map((_, index) => (
-                <Skeleton animation="wave" key={index} />
-              ))}
-            </>}
-          </Select>
-        </FormControl>
+              ) : (
+                <>
+                  {Array.from({ length: 12 }).map((_, index) => (
+                    <Skeleton animation="wave" key={index} />
+                  ))}
+                </>
+              )}
+            </Select>
+          </FormControl>
 
-        <FormControl fullWidth >
-          <InputLabel id="multipleProducts">Product</InputLabel>
-          <Select
-            labelId="multipleProducts"
-            id="multipleProducts-checkbox"
-            multiple
-            value={products}
-            onChange={handleProductChange}
-            input={<OutlinedInput label="Product" />}
-            disabled={!productList.length}
-            renderValue={(selected) => selected.join(", ")}
-            style={{
-              textOverflow: "ellipsis",
-              overflow: "hidden",
-              whiteSpace: "pre",
-            }}
-          >
-            {productList &&
-              productList?.map((p: string) => (
-                <MenuItem key={p} value={p}>
-                  <Checkbox checked={products.indexOf(p) > -1} />
-                  <ListItemText primary={p} />
-                </MenuItem>
-              ))}
-          </Select>
-        </FormControl>
+          <FormControl fullWidth>
+            <InputLabel id="multipleProducts">Product</InputLabel>
+            <Select
+              labelId="multipleProducts"
+              id="multipleProducts-checkbox"
+              multiple
+              value={products}
+              onChange={handleProductChange}
+              input={<OutlinedInput label="Product" />}
+              disabled={category === ""}
+              renderValue={(selected) => selected.join(", ")}
+              style={{
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                whiteSpace: "pre",
+              }}
+            >
+              {productList &&
+                productList?.map((p: string) => (
+                  <MenuItem key={p} value={p}>
+                    <Checkbox checked={products.indexOf(p) > -1} />
+                    <ListItemText primary={p} />
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+        </Paper>
         <Box sx={{ mt: 2 }} className="report-button" component="div">
           <Button
             fullWidth={true}
             onClick={handleRunReport}
             variant="contained"
-            disabled={!products.length || category === ""}
+            disabled={!products.length && category === ""}
           >
             Run Report
           </Button>
