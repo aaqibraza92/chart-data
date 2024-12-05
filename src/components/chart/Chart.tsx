@@ -27,7 +27,7 @@ export const Chart: FC<ChartProps> = ({
   const [dataPie, setDataPie] = useState<[]>([]);
 
   const [loading, setLoading] = useState<boolean>(false);
-
+  console.log("selectedProducts",selectedProducts)
   useEffect(() => {
     const cMap:any = {}
     if(allProducts.length){
@@ -38,12 +38,12 @@ export const Chart: FC<ChartProps> = ({
           cMap[product.category] = 1;
         }        
       })
-      console.log(cMap)
+      // console.log("cMap",cMap)
       const res:any = Object.keys(cMap).map((key, value)=> {
         return {"name": key, "y": value}
       });
       setDataPie(res);
-      console.log(dataPie)
+      console.log("dataPie",dataPie)
     }
   }, [allProducts])
 
