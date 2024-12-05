@@ -149,9 +149,9 @@ export const SideBar: React.FC<SideBarProps> = ({
         <Box sx={{ mt: 2 }} className="report-button" component="div">
           <Button
             fullWidth={true}
-            onClick={(e) => handleRunReport(e)}
+            onClick={handleRunReport}
             variant="contained"
-            disabled={!products.length}
+            disabled={!products.length || category === ""}
           >
             Run Report
           </Button>
