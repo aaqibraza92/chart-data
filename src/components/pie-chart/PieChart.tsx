@@ -17,7 +17,7 @@ const PieChart: React.FC<PieChartProps> = ({ title, data }) => {
     },
     series: [
       {
-        type: "pie",  // Explicitly define the type for the pie chart
+        type: "pie", 
         name: "Data",
         data: data,
       },
