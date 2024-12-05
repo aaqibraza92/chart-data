@@ -23,7 +23,6 @@ export const Chart: FC<ChartProps> = ({
 }) => {
   const xAxisText = "";
   const title = "Products in selected Category";
-
   const [priceBar, setPriceBar] = useState<string[]>([])
   const [dataPie, setDataPie] = useState<[]>([]);
 
@@ -80,7 +79,7 @@ export const Chart: FC<ChartProps> = ({
         </IconButton></Box>
         ) : (
               showPie ? ( 
-              dataPie && dataPie?.length && <PieChart title="Categories" data={dataPie} />
+              dataPie && dataPie?.length && <PieChart  title={category ? category.toUpperCase() : "All Categories"} data={dataPie} />
               ):
               <BarChart
               title={title}

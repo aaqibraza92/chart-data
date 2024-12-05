@@ -85,7 +85,7 @@ export const SideBar: React.FC<SideBarProps> = ({
         sx={{ p: 2, border: "1px solid #cecece" }}
       >
         <Box sx={{ mb: 2 }} className="title-bar">
-          <Typography variant="h5" gutterBottom>
+          <Typography sx={{ mb: 0 }} variant="h5" gutterBottom>
             Filters
           </Typography>
           <Button variant="text" sx={{ textTransform: "capitalize" }} onClick={handleClear}>

@@ -1,41 +1,38 @@
 import React from 'react';
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { IProducts, IProduct } from "./app.utils";
+import { IProduct } from "./app.utils";
 import { Chart } from "./components/chart/Chart";
 import { SideBar } from "./components/side-bar/SideBar";
-import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
-
 import './App.css';
-import { Container, Grid, LinearProgress, Skeleton } from '@mui/material';
+import { Container, Grid, Skeleton } from '@mui/material';
+import { allProductsUrl } from './components/endpoints';
 
 function App() {
   const [showPie, setShowPie] = useState<boolean>(true);
   const [category, setCategory] = useState<string>("");
   const [products, setProduct] = useState<string[]>([]);
-
   const [allCategories, setAllCategories] = useState<string[]>([]);
   const [allProducts, setAllProducts] = useState<IProduct[]>([]);
-
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
   useEffect(() => {
-    axios.get("https://dummyjson.com/products").then((res) => {
-      console.log(allProducts, res.data);
+    fetchAllProducts()
+  }, []);
 
+  const fetchAllProducts=async()=>{
+    await axios.get(allProductsUrl).then((res) => {
       let cat = res.data.products.map((data: IProduct) => data.category);
       const prod = res.data.products.map((data: IProduct) => data.title);
-      console.log(cat, prod);
       cat = new Set(cat);
       setAllCategories([...cat]);
       setAllProducts(res.data.products);
-      console.log(allCategories);
     });
-  }, []);
+  }
 
-  const handleRunReport = (e: any) => {
+  const handleReport = (e: any) => {
     e.preventDefault();
-    if (products.length) {
+    if (products) {
       setSelectedProducts(products);
       setShowPie(false);
     }
@@ -43,6 +40,7 @@ function App() {
   return (
 
     <>
+ 
       <section>
         <Container
           maxWidth="xl"
@@ -51,9 +49,7 @@ function App() {
             paddingBottom: 4,
           }}
         >
-
           <Grid container spacing={2}>
-            {/* Left Column */}
             <Grid item xs={12} lg={3}>
               {allCategories && allCategories?.length ? (
                 <SideBar
@@ -64,11 +60,11 @@ function App() {
                   setProduct={setProduct}
                   setShowPie={setShowPie}
                   setCategory={setCategory}
-                  handleRunReport={handleRunReport}
+                  handleRunReport={handleReport}
                 />
               ) : (
                 <>
-                  {Array.from({ length: 12 }).map((_, index) => (
+                  {Array.from({ length: 15 }).map((_, index) => (
                     <Skeleton animation="wave" key={index} />
                   ))}
                 </>
@@ -76,7 +72,6 @@ function App() {
               )}
             </Grid>
 
-            {/* Right Column */}
             <Grid item xs={12} lg={9}>
               <Chart
                 showPie={showPie}
@@ -87,16 +82,8 @@ function App() {
             </Grid>
           </Grid>
 
-
-
-
-
-
-
-
         </Container>
       </section>
-
 
     </>
 
