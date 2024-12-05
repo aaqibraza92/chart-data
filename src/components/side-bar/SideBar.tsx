@@ -82,9 +82,9 @@ export const SideBar: React.FC<SideBarProps> = ({
       <Box
         className="side-bar-container"
         component="section"
-        sx={{ p: 2, border: "1px solid #ddd" }}
+        sx={{ p: 2, border: "1px solid #cecece" }}
       >
-        <Box className="title-bar">
+        <Box sx={{ mb: 2 }} className="title-bar">
           <Typography variant="h5" gutterBottom>
             Filters
           </Typography>
@@ -92,7 +92,7 @@ export const SideBar: React.FC<SideBarProps> = ({
             Clear &times;
           </Button>
         </Box>
-        <FormControl fullWidth>
+        <FormControl sx={{ mb: 2 }} fullWidth>
           <InputLabel id="category-lists">Category</InputLabel>
           <Select
             labelId="category-lists"
@@ -120,7 +120,7 @@ export const SideBar: React.FC<SideBarProps> = ({
           </Select>
         </FormControl>
 
-        <FormControl fullWidth sx={{ mt: 1 }}>
+        <FormControl fullWidth >
           <InputLabel id="multipleProducts">Product</InputLabel>
           <Select
             labelId="multipleProducts"
@@ -146,7 +146,7 @@ export const SideBar: React.FC<SideBarProps> = ({
               ))}
           </Select>
         </FormControl>
-        <Box className="report-button" component="div">
+        <Box sx={{ mt: 2 }} className="report-button" component="div">
           <Button
             fullWidth={true}
             onClick={(e) => handleRunReport(e)}
