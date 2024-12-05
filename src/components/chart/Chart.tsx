@@ -25,11 +25,15 @@ export const Chart: FC<ChartProps> = ({
   const title = "Products in selected Category";
   const [priceBar, setPriceBar] = useState<string[]>([])
   const [dataPie, setDataPie] = useState<[]>([]);
-
   const [loading, setLoading] = useState<boolean>(false);
-  console.log("selectedProducts",selectedProducts)
+  const selectedCatProducts=allProducts.filter(item=>item.category===category)
+  // console.log("categoryWiseProduct",categoryWiseProduct)
   useEffect(() => {
-    const cMap:any = {}
+    AllCatDataEmbed()
+  }, [allProducts])
+
+  const AllCatDataEmbed=()=>{
+    const cMap:any = {};
     if(allProducts.length){
       allProducts.forEach((product: IProduct) => {
         if(cMap[product.category]){
@@ -38,14 +42,29 @@ export const Chart: FC<ChartProps> = ({
           cMap[product.category] = 1;
         }        
       })
-      // console.log("cMap",cMap)
       const res:any = Object.keys(cMap).map((key, value)=> {
         return {"name": key, "y": value}
       });
       setDataPie(res);
-      console.log("dataPie",dataPie)
     }
-  }, [allProducts])
+  }
+
+
+  useEffect(()=>{
+    if(category){
+      let tempDataCatProd:any = [];
+      selectedCatProducts.forEach((product: IProduct,index)=>{
+        tempDataCatProd.push({
+          name: product?.title,
+          y: index,
+        })
+      })
+      setDataPie(tempDataCatProd);
+    }else{
+      AllCatDataEmbed()
+    }
+   
+  },[category])
 
   useEffect(() => {
     if(selectedProducts) {
