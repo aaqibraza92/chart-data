@@ -8,7 +8,7 @@
   text-transform: capitalize;
 }
 @media only screen and (max-width: 1199px) {
-  body .side-bar-container{
+  body .sidebarWrapper {
       height: auto;
   }
 }
