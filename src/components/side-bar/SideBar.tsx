@@ -13,9 +13,9 @@ import {
   Paper,
 } from "@mui/material";
 import { FormEvent, MouseEvent, useEffect, ChangeEvent } from "react";
-import "./side-bar.css";
+import "./sidebar.css";
 import { useState } from "react";
-import { IProduct } from "../../app.utils";
+import { IProduct } from "../../app.types";
 // Import SelectChangeEvent type from MUI
 import { SelectChangeEvent } from "@mui/material/Select";
 
@@ -84,7 +84,7 @@ export const SideBar: React.FC<SideBarProps> = ({
   return (
     <>
       <Box
-        className="side-bar-container"
+        className="sidebarWrapper"
         component="section"
         sx={{
           p: 2,
@@ -93,8 +93,8 @@ export const SideBar: React.FC<SideBarProps> = ({
           justifyContent: "space-between",
         }}
       >
-        <Paper>
-          <Box sx={{ mb: 2 }} className="title-bar">
+        <Paper sx={{ boxShadow: "none" }}>
+          <Box sx={{ mb: 2 }} className="titleBar">
             <Typography sx={{ mb: 0 }} variant="h5" gutterBottom>
               Filters
             </Typography>
@@ -163,7 +163,7 @@ export const SideBar: React.FC<SideBarProps> = ({
             </Select>
           </FormControl>
         </Paper>
-        <Box sx={{ mt: 2 }} className="report-button" component="div">
+        <Box sx={{ mt: 2 }} component="div">
           <Button
             fullWidth={true}
             onClick={handleRunReport}

@@ -1,7 +1,6 @@
-import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { IProduct } from "./app.utils";
+import { IProduct } from "./app.types";
 import { Chart } from "./components/chart/Chart";
 import { SideBar } from "./components/side-bar/SideBar";
 import "./App.css";
@@ -27,7 +26,6 @@ function App() {
   const fetchAllProducts = async () => {
     await axios.get(allProductsUrl).then((res) => {
       let cat = res.data.products.map((data: IProduct) => data.category);
-      const prod = res.data.products.map((data: IProduct) => data.title);
       cat = new Set(cat);
       setAllCategories([...cat]);
       setAllProducts(res.data.products);

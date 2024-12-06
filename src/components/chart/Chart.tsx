@@ -1,11 +1,9 @@
 import Box from "@mui/material/Box/Box";
 import BarChart from "../bar-chart/BarChart";
 import PieChart from "../pie-chart/PieChart";
-import "./chart.css";
 import CircularProgress from "@mui/material/CircularProgress";
-
 import { FC, useEffect, useState } from "react";
-import { IProduct } from "../../app.utils";
+import { IProduct } from "../../app.types";
 import { IconButton } from "@mui/material";
 
 interface ChartProps {
